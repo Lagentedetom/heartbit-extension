@@ -1,0 +1,5 @@
+{
+  "name": "Heartbit",
+  "description": "A browser extension landing page that turns shopping into donations.",
+  "requestFramePermissions": []
+}
