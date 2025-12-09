@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
       
       <div className="flex justify-center space-x-6 text-gray-500 dark:text-gray-400">
         <Link to="/privacy" className="hover:text-primary transition-colors">Política de Privacidad</Link>
-        <a href="#" className="hover:text-primary transition-colors">Aviso Legal</a>
+        <Link to="/legal" className="hover:text-primary transition-colors">Aviso Legal</Link>
       </div>
       
       <div className="absolute bottom-0 right-4 md:right-16 transform translate-x-0 md:translate-x-1/4 -translate-y-2 hidden sm:block">
