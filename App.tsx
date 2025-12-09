@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
 import SuccessPage from './pages/SuccessPage';
 import NGOPage from './pages/NGOPage';
+import PrivacyPage from './pages/PrivacyPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -37,6 +38,7 @@ const App: React.FC = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/ong" element={<NGOPage />} />
           <Route path="/success" element={<SuccessPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
         </Routes>
       </Layout>
     </HashRouter>

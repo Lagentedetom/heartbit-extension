@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { IMAGES } from '../constants';
 
 const Footer: React.FC = () => {
@@ -13,7 +14,7 @@ const Footer: React.FC = () => {
       </div>
       
       <div className="flex justify-center space-x-6 text-gray-500 dark:text-gray-400">
-        <a href="#" className="hover:text-primary transition-colors">Política de Privacidad</a>
+        <Link to="/privacy" className="hover:text-primary transition-colors">Política de Privacidad</Link>
         <a href="#" className="hover:text-primary transition-colors">Aviso Legal</a>
       </div>
       
