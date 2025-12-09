@@ -1,18 +1,16 @@
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { IMAGES } from '../constants';
-
-// Reusamos la misma URL del script. 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2kPm1nT_2gfcdpYykwSeoiTzn1_UsQMlg3KdR18DkycKFHk21VE9NhhWPo5X3GX9r/exec"; 
 
 const NGOPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  
   // Estado para la calculadora
   const [shoppers, setShoppers] = useState<number>(100);
   
+  // Estado para el formulario de contacto
+  const [formData, setFormData] = useState({
+    name: '',
+    org: '',
+    message: ''
+  });
+
   // Constantes de la calculadora
   const AVG_SPEND = 75; // Gasto medio mensual
   const AVG_COMMISSION_RATE = 0.04; // 4% Comisión media estimada
@@ -29,32 +27,24 @@ const NGOPage: React.FC = () => {
     };
   }, [shoppers]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!formData.name || !formData.org) return;
 
-    setIsLoading(true);
+    // Construir el enlace mailto
+    const recipient = "tom@lagentedetom.com";
+    const subject = encodeURIComponent(`Interés ONG Heartbit: ${formData.org}`);
+    const body = encodeURIComponent(
+      `Hola Tom,\n\nSoy ${formData.name} de la organización "${formData.org}".\n\n${formData.message}\n\nMe gustaría recibir más información sobre cómo unirnos a Heartbit.`
+    );
 
-    try {
-      // Usamos URLSearchParams para asegurar compatibilidad con Google Apps Script
-      const params = new URLSearchParams();
-      params.append('email', email);
-      params.append('type', 'ngo'); // Identificador para separar en la hoja de cálculo
-
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        body: params,
-        mode: 'no-cors',
-        credentials: 'omit', // Importante
-        referrerPolicy: 'no-referrer'
-      });
-
-      navigate('/success');
-    } catch (error) {
-      console.error("Error saving email:", error);
-      alert("Hubo un error al guardar tu correo. Por favor intenta de nuevo.");
-      setIsLoading(false);
-    }
+    // Abrir cliente de correo
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -71,34 +61,67 @@ const NGOPage: React.FC = () => {
           Heartbit permite a tus seguidores apoyarte económicamente a través de sus compras habituales. Sin coste extra para ellos. Sin gestión para ti.
         </p>
 
-        <div className="relative max-w-md mx-auto mb-16">
+        <div className="relative max-w-xl mx-auto mb-16 bg-card-light dark:bg-card-dark p-8 rounded-xl shadow-lg border border-border-light dark:border-border-dark text-left">
+          <h3 className="font-display text-3xl mb-6 text-center text-gray-800 dark:text-gray-200">
+            Contáctanos para participar
+          </h3>
           <form 
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-5"
             onSubmit={handleSubmit}
           >
-            <label className="text-left font-bold text-gray-700 dark:text-gray-300">
-              Apunta a tu ONG a la lista de espera:
-            </label>
-            <div className="flex flex-col sm:flex-row gap-4">
-                <input 
-                type="email" 
-                placeholder="contacto@tu-ong.org" 
+            <div>
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                Tu Nombre
+              </label>
+              <input 
+                type="text" 
+                name="name"
                 required
-                disabled={isLoading}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-grow px-4 py-3 rounded-lg border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow disabled:opacity-60"
-                />
-                <button 
-                type="submit" 
-                disabled={isLoading}
-                className={`bg-primary text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-red-700 transition-colors whitespace-nowrap active:scale-95 transform duration-150 flex items-center justify-center ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
-                >
-                {isLoading ? "Enviando..." : "Inscribir ONG"}
-                </button>
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow"
+                placeholder="Ej. María García"
+              />
             </div>
-            <p className="text-xs text-gray-500 mt-2">
-                Nos pondremos en contacto contigo para verificar tu organización cuando lancemos.
+            
+            <div>
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                Nombre de la Organización
+              </label>
+              <input 
+                type="text" 
+                name="org"
+                required
+                value={formData.org}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow"
+                placeholder="Ej. Fundación Esperanza"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                Mensaje (Opcional)
+              </label>
+              <textarea 
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                rows={3}
+                className="w-full px-4 py-3 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow resize-none"
+                placeholder="¿Tenéis alguna duda específica?"
+              />
+            </div>
+
+            <button 
+              type="submit" 
+              className="mt-2 bg-primary text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-red-700 transition-colors active:scale-95 transform duration-150 flex items-center justify-center w-full"
+            >
+              <span className="material-icons mr-2">send</span>
+              Enviar correo a Tom
+            </button>
+            <p className="text-xs text-center text-gray-500 mt-2">
+              Esto abrirá tu cliente de correo predeterminado para enviar el mensaje a tom@lagentedetom.com
             </p>
           </form>
         </div>

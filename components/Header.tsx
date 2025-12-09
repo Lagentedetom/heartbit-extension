@@ -25,10 +25,10 @@ const Header: React.FC = () => {
           ¿Eres una ONG?
         </Link>
         <a 
-          href="#waitlist"
+          href="mailto:tom@lagentedetom.com"
           className="hidden md:inline-block bg-primary text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-red-700 transition-colors"
         >
-          Únete a la lista
+          Contactar
         </a>
       </div>
     </header>
