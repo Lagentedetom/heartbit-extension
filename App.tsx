@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
@@ -7,6 +8,7 @@ import SuccessPage from './pages/SuccessPage';
 import NGOPage from './pages/NGOPage';
 import PrivacyPage from './pages/PrivacyPage';
 import LegalPage from './pages/LegalPage';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -32,18 +34,20 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
-      <ScrollToTop />
-      <Layout>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/ong" element={<NGOPage />} />
-          <Route path="/success" element={<SuccessPage />} />
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/legal" element={<LegalPage />} />
-        </Routes>
-      </Layout>
-    </HashRouter>
+    <LanguageProvider>
+      <HashRouter>
+        <ScrollToTop />
+        <Layout>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/ong" element={<NGOPage />} />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/legal" element={<LegalPage />} />
+          </Routes>
+        </Layout>
+      </HashRouter>
+    </LanguageProvider>
   );
 };
 

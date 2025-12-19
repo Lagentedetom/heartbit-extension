@@ -1,9 +1,12 @@
+
 import React from 'react';
 import { IMAGES } from '../constants';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const SuccessPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <div className="flex-grow flex items-center justify-center min-h-[60vh] animate-fade-in">
@@ -14,7 +17,7 @@ const SuccessPage: React.FC = () => {
             onClick={() => navigate('/')}
             className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
           >
-            <span className="material-icons">close</span>
+            <span className="material-icons">{t('common.close')}</span>
           </button>
 
           <img 
@@ -24,15 +27,15 @@ const SuccessPage: React.FC = () => {
           />
           
           <h1 className="font-display text-5xl md:text-7xl text-primary mb-6 text-shadow-pixel">
-            ¡Gracias!
+            {t('success.thanks')}
           </h1>
           
           <p className="text-2xl md:text-3xl font-display text-gray-700 dark:text-gray-300 mb-4">
-            Ya estás en la lista de espera.
+            {t('success.message')}
           </p>
           
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-md mx-auto leading-relaxed">
-            Te avisaremos por email tan pronto como puedas instalar Heartbit y empezar a convertir tus compras en ayuda, sin gastar un euro extra.
+            {t('success.desc')}
           </p>
 
           <div className="mt-8">
@@ -40,7 +43,7 @@ const SuccessPage: React.FC = () => {
                onClick={() => navigate('/')}
                className="text-primary hover:text-red-700 font-bold underline decoration-2 underline-offset-4"
              >
-               Volver al inicio
+               {t('common.backHome')}
              </button>
           </div>
         </div>

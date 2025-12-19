@@ -1,64 +1,50 @@
+
 import React from 'react';
 import BrowserMockup from '../components/BrowserMockup';
 import StepCard from '../components/StepCard';
-import { FeatureStep } from '../types';
-
-const STEPS: FeatureStep[] = [
-  {
-    id: 1,
-    title: "Instala",
-    description: "Añade la extensión gratuita de Heartbit a tu navegador. Es 100% segura.",
-    icon: "extension"
-  },
-  {
-    id: 2,
-    title: "Navega",
-    description: "Compra en tus tiendas favoritas como siempre lo haces.",
-    icon: "shopping_cart"
-  },
-  {
-    id: 3,
-    title: "Ayuda",
-    description: "La marca dona una parte. Tú recibes karma (y un aviso de Heartbit).",
-    icon: "volunteer_activism"
-  }
-];
+import { useLanguage } from '../contexts/LanguageContext';
 
 const LandingPage: React.FC = () => {
+  const { t } = useLanguage();
+
+  const STEPS = [
+    { id: 1, title: t('landing.howItWorks.step1.title'), description: t('landing.howItWorks.step1.desc'), icon: "extension" },
+    { id: 2, title: t('landing.howItWorks.step2.title'), description: t('landing.howItWorks.step2.desc'), icon: "shopping_cart" },
+    { id: 3, title: t('landing.howItWorks.step3.title'), description: t('landing.howItWorks.step3.desc'), icon: "volunteer_activism" }
+  ];
+
   return (
     <div className="space-y-24">
-      {/* Hero Section */}
       <section className="text-center relative">
         <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-primary mb-4 text-shadow-pixel leading-none">
-          Convierte tus compras en ayuda.
+          {t('landing.hero.title')}
         </h1>
         <h2 className="text-3xl md:text-5xl lg:text-6xl font-display text-text-light dark:text-text-dark mb-6">
-          Sin gastar un euro extra.
+          {t('landing.hero.subtitle')}
         </h2>
         <p className="max-w-3xl mx-auto text-lg md:text-xl mb-12 text-gray-600 dark:text-gray-400 px-4">
-          La extensión gratuita que dona un % de tus compras por internet a la ONG que tú elijas.
+          {t('landing.hero.description')}
         </p>
         
         <div className="relative max-w-lg mx-auto px-4 z-10 flex flex-col items-center gap-4">
           <a 
-            href="mailto:tom@lagentedetom.com?subject=Interés en Heartbit"
+            href={`mailto:tom@lagentedetom.com?subject=${encodeURIComponent(t('landing.hero.title'))}`}
             className="bg-primary text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-red-700 transition-colors whitespace-nowrap active:scale-95 transform duration-150 flex items-center justify-center min-w-[200px]"
           >
             <span className="material-icons mr-2">mail</span>
-            Contactar
+            {t('landing.hero.cta')}
           </a>
           <p className="text-sm text-gray-500">
-            Próximamente disponible. Escríbenos para más info.
+            {t('landing.hero.comingSoon')}
           </p>
         </div>
 
         <BrowserMockup />
       </section>
 
-      {/* How it Works Section */}
       <section className="py-8">
         <h2 className="font-display text-5xl text-center mb-16 text-text-light dark:text-text-dark">
-          ¿Cómo funciona?
+          {t('landing.howItWorks.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto px-4">
           {STEPS.map(step => (
@@ -67,15 +53,14 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Transparency Section */}
       <section className="py-8 px-4">
         <div className="max-w-3xl mx-auto text-center p-10 bg-card-light dark:bg-card-dark rounded-xl shadow-lg border border-border-light dark:border-border-dark relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-400 via-yellow-400 to-green-400 opacity-50"></div>
           <h2 className="font-display text-5xl mb-6 text-text-light dark:text-text-dark">
-            Transparencia
+            {t('landing.transparency.title')}
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-            Heartbit funciona gracias al marketing de afiliación. Las marcas nos pagan una comisión por referir la venta y nosotros donamos los beneficios. Así de simple.
+            {t('landing.transparency.desc')}
           </p>
         </div>
       </section>
